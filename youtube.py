@@ -10,6 +10,7 @@ config.read("config.ini", encoding="utf-8")
 COOKIES_TXT_PATH = config.get('basic', 'COOKIES_TXT_PATH')
 BILIBILI_ROOM_TITLE = config.get('live', 'BILIBILI_ROOM_TITLE')
 FFMPEG_COMMAND = config.get('live', 'FFMPEG_COMMAND')
+YOUTUBE_LIVE_URL = config.get('youtube-dl', 'YOUTUBE_LIVE_URL')
 ALWAYS_USE_HIGHEST_QUALITY = config.getboolean('youtube-dl', 'ALWAYS_USE_HIGHEST_QUALITY')
 BILIBILI_ROOM_AREA_ID = config.getint('live', 'BILIBILI_ROOM_AREA_ID')
 
@@ -29,11 +30,8 @@ if __name__ == '__main__':
             b.isLogin()
     my_info = b.get_my_basic_info()
     print("[提示][已登录账号{}][mid:{}][昵称:{}]".format(my_info['userid'], my_info['mid'], my_info['uname']))
-    print("[提示]请输入Youtube直播地址:")
-    print("[提示]格式1.https://www.youtube.com/watch?v=xXxxXxxxXxx")
-    print("[提示]格式2.https://www.youtube.com/channel/UCxxxxXXxXXXXXXxxxxXXXx/live")
-    print("[提示]格式3.https://youtu.be/XxxxXXXxxxX")
-    youtube_live_url = input("请输入:")
+    
+    youtube_live_url = YOUTUBE_LIVE_URL
     f = os.popen('youtube-dl -F {} --no-check-certificate'.format(youtube_live_url))
     codes = []
     ana = f.read().strip()
@@ -43,6 +41,8 @@ if __name__ == '__main__':
         if len(code) != 0:
             codes.append(int(code[0]))
     codes.sort()
+
+
     if not ALWAYS_USE_HIGHEST_QUALITY:  # 自动选择清晰度
         quality_code = int(input("[提示]请选择推流清晰度,只可在{}中选择:\n".format(codes)))
         while True:
@@ -55,6 +55,9 @@ if __name__ == '__main__':
     else:
         quality_code = codes[-1]
         print("[提示]自动获得最高清晰度的m3u8地址...")
+    # quality_code = 95 # 720P
+    
+
     while True:
         try:
             f = os.popen('youtube-dl -f {} -g {} --no-check-certificate'.format(quality_code, youtube_live_url))
