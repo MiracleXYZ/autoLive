@@ -55,7 +55,6 @@ if __name__ == '__main__':
     else:
         quality_code = codes[-1]
         print("[提示]自动获得最高清晰度的m3u8地址...")
-    # quality_code = 95 # 720P
     
 
     while True:

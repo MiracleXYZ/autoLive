@@ -19,3 +19,10 @@ screen -dmS rebroadcast python3 youtube.py
 ```
 screen -X -S rebroadcast quit
 ```
+
+## TO-DO
+
+1. 提高连接稳定性
+2. 增加自动重连机制
+3. 局部打码/显示B站评论
+
